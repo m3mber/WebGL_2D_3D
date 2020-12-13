@@ -4,6 +4,9 @@
 var gl = null;
 var gl_1 = null;
 
+var cameraMatrix = mat4();
+var cameraMatrix2=mat4();
+
 var shaderProgram = null;
 var shaderProgram_1 = null;
 
@@ -252,7 +255,7 @@ function drawModel( model, mvMatrix, primitiveType )
 	}	
 }
 
-function drawModel_1( model, mvMatrix, primitiveType ) 
+function drawModel_1( model, mvMatrix, primType ) 
 {
 
 	// The the global model transformation is an input
@@ -320,28 +323,19 @@ function drawModel_1( model, mvMatrix, primitiveType )
 			flatten(lightSources[i].getIntensity()) );
     }
         
-	// Drawing 
 	
-	// primitiveType allows drawing as filled triangles / wireframe / vertices
-	
-	if( primitiveType_1 == gl_1.LINE_LOOP ) {
-		
-		// To simulate wireframe drawing!
-		
-		// No faces are defined! There are no hidden lines!
-		
-		// Taking the vertices 3 by 3 and drawing a LINE_LOOP
+	if( primType == gl_1.LINE_LOOP ) {
 		
 		var i;
 		
 		for( i = 0; i < triangleVertexPositionBuffer_1.numItems / 3; i++ ) {
 		
-			gl_1.drawArrays( primitiveType_1, 3 * i, 3 ); 
+			gl_1.drawArrays( primType, 3 * i, 3 ); 
 		}
 	}	
 	else {
 				
-		gl_1.drawArrays(primitiveType_1, 0, triangleVertexPositionBuffer_1.numItems); 
+		gl_1.drawArrays(primType, 0, triangleVertexPositionBuffer_1.numItems); 
 		
 	}	
 }
@@ -353,11 +347,6 @@ function drawModel_1( model, mvMatrix, primitiveType )
 function drawScene() 
 {
 	
-	var pMatrix;
-
-	var mat;
-	
-	var mvMatrix = mat4();
 	
 	// Clearing the frame-buffer and the depth-buffer
 	
@@ -378,11 +367,11 @@ function drawScene()
 		
 		// For now, the default orthogonal view volume
 		
-		pMatrix = ortho( -1.0, 1.0, -1.0, 1.0, -1.0, 1.0 );
+		pMatrix = ortho( -1.0, 1.0, -1.0, 1.0, -1.0, 10 );
 		
 		// Global transformation !!
 		
-		globalTz = 0.0;
+		globalTz = -1.0;
 		
 		// NEW --- The viewer is on the ZZ axis at an indefinite distance
 		
@@ -406,7 +395,7 @@ function drawScene()
 		
 		// Global transformation !!
 		
-		globalTz = -2.5;
+		globalTz = -2.0;
 
 		// NEW --- The viewer is on (0,0,0)
 		
@@ -434,7 +423,7 @@ function drawScene()
 	// GLOBAL TRANSFORMATION FOR THE WHOLE SCENE
 	
 	mvMatrix = translationMatrix( 0, 0, globalTz );
-	
+	cameraMatrix = mvMatrix;
 	// NEW - Updating the position of the light sources, if required
 	
 	// FOR EACH LIGHT SOURCE
@@ -472,9 +461,6 @@ function drawScene()
 			   mvMatrix,
 	           primitiveType );
 	}
-
-//drawModel( pMatrix, mvMatrix,  primitiveType );
-
 	           
 	// NEW - Counting the frames
 	
@@ -484,12 +470,6 @@ function drawScene()
 
 function drawScene_1() 
 {
-	
-	var pMatrix;
-
-	var mat;
-	
-	var mvMatrix = mat4();
 	
 	// Clearing the frame-buffer and the depth-buffer
 	
@@ -514,7 +494,7 @@ function drawScene_1()
 		
 	// Ensure that the model is "inside" the view volume
 		
-	pMatrix = perspective(fieldOfView, 1, 0.05, 15 );
+	pMatrix = perspective(fieldOfView, 1, 0.01, 15 );
 		
 	// Global transformation !!
 		
@@ -524,7 +504,7 @@ function drawScene_1()
 		
 	pos_Viewer[0] = pos_Viewer[1] = pos_Viewer[2] = 0.0;
 		
-	pos_Viewer[3] = 5.0;  
+	pos_Viewer[3] = 1.0;  
 		
 	// TO BE DONE !
 		
@@ -545,7 +525,7 @@ function drawScene_1()
 
 
 	
-	matrixT = translationMatrix(0, 0, -6.5);
+	matrixT = translationMatrix(0, 0, -5.5);
 	matrixRotateX = rotationXXMatrix(rotateX);
 	matrixRotateY = rotationYYMatrix(rotateY);
 	matrixRotateZ = rotationZZMatrix(rotateZ);
@@ -555,6 +535,9 @@ function drawScene_1()
 	matrix_12 = mult(matrix_11, matrixRotateY);
 	mvMatrix = mult(matrix_12, matrixRotateZ);
 	
+	cameraMatrix2 = mvMatrix;
+
+
 	// NEW - Updating the position of the light surces, if required
 	
 	// FOR EACH LIGHT SOURCE
@@ -593,9 +576,39 @@ function drawScene_1()
 	           primitiveType );
 	}
 
-//drawModel( pMatrix, mvMatrix,  primitiveType );
+		
+	var viewMatrix = matrix_invert(cameraMatrix2);
+ 
+    	let matx = mult( pMatrix, mvMatrix);
+    	matx = mult(matx, cameraMatrix);
 
-	           
+	var frustum = new emptyModelFeatures();
+	frustum.vertices = [
+      -1, -1, -1,  // cube vertices
+       1, -1, -1,
+      -1,  1, -1,
+       1,  1, -1,
+      -1, -1,  1,
+       1, -1,  1,
+      -1,  1,  1,
+       1,  1,  1,
+    ];
+
+    computeVertexNormals( frustum.vertices, frustum.normals );
+	frustum.tx = 0.0;
+	frustum.ty = 0.0;
+	frustum.tz = 0.0;
+
+	frustum.sx = 1;
+	frustum.sy = 1;
+	frustum.sz = 1;
+	
+
+	var prim_t = gl_1.LINE_LOOP;
+	drawModel_1( frustum,
+			   mvMatrix,
+	           prim_t );
+
 	// NEW - Counting the frames
 	
 	countFrames();
