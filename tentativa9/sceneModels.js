@@ -67,6 +67,86 @@ function emptyModelFeatures() {
 	this.nPhong = 100;
 }
 
+
+function orthoFrustumModel( left, right, buttom, top, near, far) {
+	
+	var frustum = new emptyModelFeatures();
+	
+	frustum.vertices = [
+
+		left, buttom,  -near, 
+		right,  top,  -near, 
+		left,  top,  -near, 
+		left, buttom,  -near,
+		 right, buttom,  -near, 
+		 right,  top,  -near, 
+         right, buttom,  -near, 
+		 right, buttom, -far, 
+		 right,  top, -far, 
+         right, buttom,  -near, 
+         right,  top, -far, 
+         right,  top,  -near, 
+        left, buttom, -far, 
+       	left,  top, -far,
+         right,  top, -far, 
+        left, buttom, -far, 
+         right,  top, -far, 
+         right, buttom, -far, 
+        left, buttom, -far, 
+		left, buttom,  -near, 
+		left,  top, -far, 
+		left, buttom,  -near, 
+		left,  top,  -near, 
+		left,  top, -far, 
+		left,  top, -far, 
+		left,  top,  -near, 
+		 right,  top, -far, 
+		left,  top,  -near, 
+		 right,  top,  -near, 
+		 right,  top, -far, 
+		left, buttom,  -near, 
+		left, buttom, -far,
+		 right, buttom, -far, 
+		left, buttom,  -near, 
+		 right, buttom, -far, 
+		 right, buttom,  -near, 	 
+	];
+
+	computeVertexNormals( frustum.vertices, frustum.normals );
+
+	return frustum;
+}
+function perspectiveFrustumModel( near, far ) {
+	
+	var frustum = new emptyModelFeatures();
+	
+	frustum.vertices =[ 
+    // Front face
+    0.0,  1.0,  0.0,
+    -1.0*5, -1.0*5,  1.0*5,
+    1.0*5, -1.0*5,  1.0,*5
+    // Right face
+    0.0,  1.0,  0.0,
+    1.0*5, -1.0*5,  1.0*5,
+    1.0*5, -1.0*5, -1.0*5,
+    // Back face
+    0.0,  1.0,  0.0,
+    1.0*5, -1.0*5, -1.0*5,
+    -1.0*5, -1.0*5, -1.0*5,
+    // Left face
+    0.0,  1.0,  0.0,
+    -1.0*5, -1.0*5, -1.0*5,
+    -1.0*5, -1.0*5,  1.0*5
+    ];
+
+	computeVertexNormals( frustum.vertices, frustum.normals );
+
+	return frustum;
+}
+
+
+
+
 function singleTriangleModel( ) {
 	
 	var triangle = new emptyModelFeatures();
@@ -302,7 +382,7 @@ sceneModels.push( new simpleCubeModel() );
 
 sceneModels[0].tx = 0.0;
 sceneModels[0].ty = -0.3;
-sceneModels[0].tz = 0.3;
+sceneModels[0].tz = 0.0;
 
 sceneModels[0].sx = 0.25;
 sceneModels[0].sy = 0.25;
@@ -329,7 +409,7 @@ sceneModels[2].tz = -1;
 sceneModels[2].sx = sceneModels[2].sy = sceneModels[2].sz = 0.4;
 
 
-sceneModels.push( new simpleCameraModel( 5 ) );
+/*sceneModels.push( new simpleCameraModel( 5 ) );
 
 sceneModels[3].tx = 0;
 sceneModels[3].ty = -0.2;
@@ -338,16 +418,24 @@ sceneModels[3].tz = 2.5;
 sceneModels[3].sx = 0.1;
 sceneModels[3].sy = 0.1
 sceneModels[3].sz = 0.2;
-
+*/
 sceneModels.push( new simpleCubeModel( 5 ) );
 
-sceneModels[4].tx = 0;
-sceneModels[4].ty = -1;
-sceneModels[4].tz = -0.5;
+sceneModels[3].tx = 0;
+sceneModels[3].ty = -1;
+sceneModels[3].tz = -0.5;
 
-sceneModels[4].sx = 0.9;
-sceneModels[4].sy = 0.1
-sceneModels[4].sz = 0.9;
+sceneModels[3].sx = 0.9;
+sceneModels[3].sy = 0.1
+sceneModels[3].sz = 0.9;
+
+sceneModels.push( new sphereModel( 5 ) );
+
+sceneModels[4].tx = 0;
+sceneModels[4].ty = 0;
+sceneModels[4].tz = 2.0;
+
+sceneModels[4].sx = sceneModels[4].sy = sceneModels[4].sz = 0.05;
 
 /*
 sceneModels.push( new simpleCubeModel() );

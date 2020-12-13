@@ -4,6 +4,17 @@
 var gl = null;
 var gl_1 = null;
 
+var ort_left = null;
+var ort_right = null;
+var ort_buttom = null;
+var ort_top = null;
+var ort_near = null;
+var ort_far = null;
+
+var persp_aspect = null;
+var persp_near = null; 
+var persp_far=null;
+
 var cameraMatrix = mat4();
 var cameraMatrix2=mat4();
 
@@ -366,12 +377,17 @@ function drawScene()
 	if( projectionType == 0 ) {
 		
 		// For now, the default orthogonal view volume
-		
-		pMatrix = ortho( -1.0, 1.0, -1.0, 1.0, -1.0, 10 );
+		 ort_left = -1.0;
+		 ort_right = 1.0;
+		 ort_buttom = -1.0;
+		 ort_top = 1.0;
+		 ort_near = -0.8;
+		 ort_far = 1.6;
+		pMatrix = ortho( ort_left, ort_right, ort_buttom, ort_top, ort_near, ort_far );
 		
 		// Global transformation !!
 		
-		globalTz = -1.0;
+		globalTz = -0.0;
 		
 		// NEW --- The viewer is on the ZZ axis at an indefinite distance
 		
@@ -380,7 +396,8 @@ function drawScene()
 		pos_Viewer[2] = 0.0;  
 		
 		// TO BE DONE !
-		
+		;
+
 		// Allow the user to control the size of the view volume
 	}
 	else {	
@@ -391,7 +408,10 @@ function drawScene()
 		
 		// Ensure that the model is "inside" the view volume
 		
-		pMatrix = perspective(fieldOfView, 1, 0.05, 15 );
+		
+		persp_near = 0.1;
+		persp_far = 5;
+		pMatrix = perspective(fieldOfView, 1, persp_near, persp_far );
 		
 		// Global transformation !!
 		
@@ -471,11 +491,6 @@ function drawScene()
 function drawScene_1() 
 {
 	
-	// Clearing the frame-buffer and the depth-buffer
-	
-	gl_1.clear(gl_1.COLOR_BUFFER_BIT | gl_1.DEPTH_BUFFER_BIT);
-
-	
 	var pMatrix;
 	
 	var mvMatrix = mat4();
@@ -485,7 +500,27 @@ function drawScene_1()
 	gl_1.clear(gl_1.COLOR_BUFFER_BIT | gl_1.DEPTH_BUFFER_BIT);
 	
 	// Computing the Projection Matrix
+	if( projectionType == 0 ) {
+
+		var frustum = new orthoFrustumModel(ort_left, ort_right, ort_buttom, ort_top, ort_near, ort_far );	
+		
+	}
+	else {	
+
+		var frustum = new perspectiveFrustumModel( persp_near, persp_far );
 	
+	frustum.rotAngleXX = 90;
+	frustum.tx = 0.0;
+	frustum.ty = 0.0;
+	frustum.tz = 1.0; 
+
+	frustum.sx = 1.0; // abertura da lente horizontal
+	frustum.sy = 1.0; // comprimento á frente
+	frustum.sz = 1.0; // abertura da lente vertical
+
+	//frustum.rotAngleXX = 90;
+		
+	}
 
 
 	// A standard view volume.
@@ -494,8 +529,8 @@ function drawScene_1()
 		
 	// Ensure that the model is "inside" the view volume
 		
-	pMatrix = perspective(fieldOfView, 1, 0.01, 15 );
-		
+	pMatrix = perspective(fieldOfView, 1, 0.01, 150 );
+
 	// Global transformation !!
 		
 	globalTz = -5.5;
@@ -578,43 +613,13 @@ function drawScene_1()
 	}
 
 		
-	var viewMatrix = matrix_invert(cameraMatrix2);
+	/*var viewMatrix = matrix_invert(cameraMatrix2);
  
     let matx = mult( pMatrix, mvMatrix);
     	matx = mult( matx, cameraMatrix);
+*/
 
-	var frustum = new emptyModelFeatures();
-	
 
-	frustum.vertices = [
-    // Front face
-    0.0,  0.6,  0.0,
-    -1.0, -1.0,  1.0,
-    1.0, -1.0,  1.0,
-    // Right face
-    0.0,  0.6,  0.0,
-    1.0, -1.0,  1.0,
-    1.0, -1.0, -1.0,
-    // Back face
-    0.0,  0.6,  0.0,
-    1.0, -1.0, -1.0,
-    -1.0, -1.0, -1.0,
-    // Left face
-    0.0,  0.6,  0.0,
-    -1.0, -1.0, -1.0,
-    -1.0, -1.0,  1.0
-    ];
-
-    computeVertexNormals( frustum.vertices, frustum.normals );
-	frustum.tx = 0.0;
-	frustum.ty = -0.2;
-	frustum.tz = 0.5; 
-
-	frustum.sx = 2.35; // abertura da lente horizontal
-	frustum.sy = 3.0; // comprimento á frente
-	frustum.sz = 2.0; // abertura da lente vertical
-
-	frustum.rotAngleXX = 90;
 	
 
 	var prim_t = gl_1.LINE_LOOP;
