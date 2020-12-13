@@ -119,24 +119,24 @@ function orthoFrustumModel( left, right, buttom, top, near, far) {
 function perspectiveFrustumModel( near, far ) {
 	
 	var frustum = new emptyModelFeatures();
-	
+	var far = far-2;
 	frustum.vertices =[ 
     // Front face
     0.0,  1.0,  0.0,
-    -1.0*5, -1.0*5,  1.0*5,
-    1.0*5, -1.0*5,  1.0,*5
+    -1.0-far, -1.0-far,  1.0+far,
+    1.0+far, -1.0-far,  1.0+far,
     // Right face
     0.0,  1.0,  0.0,
-    1.0*5, -1.0*5,  1.0*5,
-    1.0*5, -1.0*5, -1.0*5,
+    1.0+far, -1.0-far,  1.0+far,
+    1.0+far, -1.0-far, -1.0-far,
     // Back face
     0.0,  1.0,  0.0,
-    1.0*5, -1.0*5, -1.0*5,
-    -1.0*5, -1.0*5, -1.0*5,
+    1.0+far, -1.0-far, -1.0-far,
+    -1.0-far, -1.0-far, -1.0-far,
     // Left face
     0.0,  1.0,  0.0,
-    -1.0*5, -1.0*5, -1.0*5,
-    -1.0*5, -1.0*5,  1.0*5
+    -1.0-far, -1.0-far, -1.0-far,
+    -1.0-far, -1.0-far,  1.0+far,
     ];
 
 	computeVertexNormals( frustum.vertices, frustum.normals );

@@ -410,7 +410,7 @@ function drawScene()
 		
 		
 		persp_near = 0.1;
-		persp_far = 5;
+		persp_far = 3.6;
 		pMatrix = perspective(fieldOfView, 1, persp_near, persp_far );
 		
 		// Global transformation !!
@@ -507,7 +507,7 @@ function drawScene_1()
 	}
 	else {	
 
-		var frustum = new perspectiveFrustumModel( persp_near, persp_far );
+		var frustum = new perspectiveFrustumModel( persp_near, persp_far);
 	
 	frustum.rotAngleXX = 90;
 	frustum.tx = 0.0;
