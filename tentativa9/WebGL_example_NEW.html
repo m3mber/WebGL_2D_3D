@@ -284,7 +284,7 @@ The fragment shader is the same simple one.
 		    </p>
 
 		    <p>Field Of View:
-		    <button id="field-of-view-near" type="button" class="btn-sm btn-dark">Close</button>
+		    <button id="field-of-view-near" type="button" class="btn-sm btn-dark">Closed</button>
 
 		    <button id="field-of-view-far" type="button" class="btn-sm btn-dark">Open</button>
 			</p>
@@ -300,11 +300,13 @@ The fragment shader is the same simple one.
 	        </p>
 	        <br><br>
 	        <h4>Individual Models</h4>
-		    <p>Cube Movement:
+		    <p>Cube Movement:   
 		    <button id="move_cube_left" type="button" class="btn-sm btn-dark">Left</button>
 		    <button id="move_cube_right" type="button" class="btn-sm btn-dark">Right</button>
 		    <button id="move_cube_up" type="button" class="btn-sm btn-dark">Up</button>
 		    <button id="move_cube_down" type="button" class="btn-sm btn-dark">Down</button>
+		    <button id="move_cube_in" type="button" class="btn-sm btn-dark">In</button>
+		    <button id="move_cube_out" type="button" class="btn-sm btn-dark">Out</button>
 			</p>
 
 			<p>Sphere 1 Movement:
@@ -312,6 +314,8 @@ The fragment shader is the same simple one.
 		    <button id="move_sphere1_right" type="button" class="btn-sm btn-dark">Right</button>
 		    <button id="move_sphere1_up" type="button" class="btn-sm btn-dark">Up</button>
 		    <button id="move_sphere1_down" type="button" class="btn-sm btn-dark">Down</button>
+		    <button id="move_sphere1_in" type="button" class="btn-sm btn-dark">In</button>
+		    <button id="move_sphere1_out" type="button" class="btn-sm btn-dark">Out</button>
 			</p>
 
 			<p>Sphere 2 Movement:
@@ -319,21 +323,25 @@ The fragment shader is the same simple one.
 		    <button id="move_sphere2_right" type="button" class="btn-sm btn-dark">Right</button>
 		    <button id="move_sphere2_up" type="button" class="btn-sm btn-dark">Up</button>
 		    <button id="move_sphere2_down" type="button" class="btn-sm btn-dark">Down</button>
+		    <button id="move_sphere2_in" type="button" class="btn-sm btn-dark">In</button>
+		    <button id="move_sphere2_out" type="button" class="btn-sm btn-dark">Out</button>
 			</p>
 			<br><br>
-	        <h4>Right Scene Rotation</h4>
-		    <p>X Movements:
-		    <button id="rotate_c_scene_right_x" type="button" class="btn-sm btn-dark">More</button>
-		    <button id="rotate_cc_scene_right_x" type="button" class="btn-sm btn-dark">Less</button>
+	        <h4>Right Scene</h4>
+		    <p>X Rotation:
+		    <button id="rotate_c_scene_right_x" type="button" class="btn-sm btn-dark">-</button>
+		    <button id="rotate_cc_scene_right_x" type="button" class="btn-sm btn-dark">+</button>
 			</p>
-		    <p>Y Movements:
-		    <button id="rotate_c_scene_right_y" type="button" class="btn-sm btn-dark">More</button>
-		    <button id="rotate_cc_scene_right_y" type="button" class="btn-sm btn-dark">Less</button>
+		    <p>Y Rotation:
+		    <button id="rotate_c_scene_right_y" type="button" class="btn-sm btn-dark">-</button>
+		    <button id="rotate_cc_scene_right_y" type="button" class="btn-sm btn-dark">+</button>
 			</p>
-			<p>Z Movements:
-		    <button id="rotate_c_scene_right_z" type="button" class="btn-sm btn-dark">More</button>
-		    <button id="rotate_cc_scene_right_z" type="button" class="btn-sm btn-dark">Less</button>
+			<p>Z Rotation:
+		    <button id="rotate_c_scene_right_z" type="button" class="btn-sm btn-dark">-</button>
+		    <button id="rotate_cc_scene_right_z" type="button" class="btn-sm btn-dark">+</button>
 			</p>
+			<button id="scene_right_in" type="button" class="btn-sm btn-dark">Zoom In</button>
+		    <button id="scene_right_out" type="button" class="btn-sm btn-dark">Zoom Out</button>
 
         </div>	
 	</div>

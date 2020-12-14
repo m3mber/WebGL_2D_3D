@@ -55,7 +55,7 @@ var primitiveType_1 = null;
 var projectionType = 0;
 
 var fieldOfView = 62;
-
+var fieldOfView_right = 62;
 // NEW --- The viewer position
 
 // It has to be updated according to the projection type
@@ -381,7 +381,7 @@ function drawScene()
 		 ort_right = 1.0;
 		 ort_buttom = -1.0;
 		 ort_top = 1.0;
-		 ort_near = -0.8;
+		 ort_near = -0.7;
 		 ort_far = 1.6;
 		pMatrix = ortho( ort_left, ort_right, ort_buttom, ort_top, ort_near, ort_far );
 		
@@ -410,7 +410,7 @@ function drawScene()
 		
 		
 		persp_near = 0.1;
-		persp_far = 3.6;
+		persp_far = 3.2;
 		pMatrix = perspective(fieldOfView, 1, persp_near, persp_far );
 		
 		// Global transformation !!
@@ -507,7 +507,7 @@ function drawScene_1()
 	}
 	else {	
 
-		var frustum = new perspectiveFrustumModel( persp_near, persp_far);
+	var frustum = new perspectiveFrustumModel( persp_near, persp_far);
 	
 	frustum.rotAngleXX = 90;
 	frustum.tx = 0.0;
@@ -529,7 +529,8 @@ function drawScene_1()
 		
 	// Ensure that the model is "inside" the view volume
 		
-	pMatrix = perspective(fieldOfView, 1, 0.01, 150 );
+	
+	pMatrix = perspective(fieldOfView_right, 1, 0.01, 150 );
 
 	// Global transformation !!
 		
@@ -758,7 +759,15 @@ function setEventListeners()
 	document.getElementById("rotate_c_scene_right_z").onclick = function(){
 		rotateZ -= 5;
 
-	}	 
+	}
+	document.getElementById("scene_right_in").onclick = function(){
+		fieldOfView_right -= 5;
+
+	}
+	document.getElementById("scene_right_out").onclick = function(){
+		fieldOfView_right += 5;
+
+	}		 
 
 	// Buttons move all scenes
 	document.getElementById("move_scene_left").onclick = function(){
@@ -776,16 +785,16 @@ function setEventListeners()
 	}
 
 	document.getElementById("move_scene_up").onclick = function(){
-		sceneModels[0].ty -= .05;
-		sceneModels[1].ty -= .05;
-		sceneModels[2].ty -= .05;
+		sceneModels[0].ty += .05;
+		sceneModels[1].ty += .05;
+		sceneModels[2].ty += .05;
 
 	}
 
 	document.getElementById("move_scene_down").onclick = function(){
-		sceneModels[0].ty += .05;
-		sceneModels[1].ty += .05;
-		sceneModels[2].ty += .05;
+		sceneModels[0].ty -= .05;
+		sceneModels[1].ty -= .05;
+		sceneModels[2].ty -= .05;
 
 	}
 
@@ -793,60 +802,67 @@ function setEventListeners()
 	// Buttons move cube
 	document.getElementById("move_cube_left").onclick = function(){
 		sceneModels[0].tx -= .05;
-
 	}
 	document.getElementById("move_cube_right").onclick = function(){
 		sceneModels[0].tx += .05;
-
 	}
-
 	document.getElementById("move_cube_up").onclick = function(){
 		sceneModels[0].ty += .05;
-
 	}
 	document.getElementById("move_cube_down").onclick = function(){
 		sceneModels[0].ty -= .05;
-
 	}
+	document.getElementById("move_cube_in").onclick = function(){
+		sceneModels[0].tz += .05;
+	}
+	document.getElementById("move_cube_out").onclick = function(){
+		sceneModels[0].tz -= .05;
+	}
+
 
 	// Buttons move sphere n1
 	document.getElementById("move_sphere1_left").onclick = function(){
 		sceneModels[1].tx -= .05;
-
 	}
 	document.getElementById("move_sphere1_right").onclick = function(){
 		sceneModels[1].tx += .05;
-
 	}
 
 	document.getElementById("move_sphere1_up").onclick = function(){
 		sceneModels[1].ty += .05;
-
 	}
 	document.getElementById("move_sphere1_down").onclick = function(){
 		sceneModels[1].ty -= .05;
-
+	}
+	document.getElementById("move_sphere1_in").onclick = function(){
+		sceneModels[1].tz += .05;
+	}
+	document.getElementById("move_sphere1_out").onclick = function(){
+		sceneModels[1].tz -= .05;
 	}
 
 	// Buttons move sphere n2
 	document.getElementById("move_sphere2_left").onclick = function(){
 		sceneModels[2].tx -= .05;
-
 	}
 	document.getElementById("move_sphere2_right").onclick = function(){
 		sceneModels[2].tx += .05;
-
 	}
 
 	document.getElementById("move_sphere2_up").onclick = function(){
 		sceneModels[2].ty += .05;
-
 	}
 	document.getElementById("move_sphere2_down").onclick = function(){
 		sceneModels[2].ty -= .05;
-
 	}
-  
+	document.getElementById("move_sphere2_in").onclick = function(){
+		sceneModels[2].tz += .05;
+	}
+	document.getElementById("move_sphere2_out").onclick = function(){
+		sceneModels[2].tz -= .05;
+	}  
+
+
 	// Button events
 	document.getElementById("field-of-view-near").onclick = function(){
 		if (fieldOfView > 15) {
