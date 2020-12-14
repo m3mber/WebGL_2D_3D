@@ -54,8 +54,8 @@ var primitiveType_1 = null;
 
 var projectionType = 0;
 
-var fieldOfView = 62;
-var fieldOfView_right = 62;
+var fieldOfView = 60;
+var fieldOfView_right = 60;
 // NEW --- The viewer position
 
 // It has to be updated according to the projection type
@@ -410,7 +410,7 @@ function drawScene()
 		
 		
 		persp_near = 0.1;
-		persp_far = 3.2;
+		persp_far = 4;
 		pMatrix = perspective(fieldOfView, 1, persp_near, persp_far );
 		
 		// Global transformation !!
@@ -507,16 +507,16 @@ function drawScene_1()
 	}
 	else {	
 
-	var frustum = new perspectiveFrustumModel( persp_near, persp_far);
+	var frustum = new perspectiveFrustumModel( fieldOfView, persp_near, persp_far);
 	
 	frustum.rotAngleXX = 90;
 	frustum.tx = 0.0;
 	frustum.ty = 0.0;
 	frustum.tz = 1.0; 
 
-	frustum.sx = 1.0; // abertura da lente horizontal
-	frustum.sy = 1.0; // comprimento á frente
-	frustum.sz = 1.0; // abertura da lente vertical
+	frustum.sx = 1.0;//*getTanFromDegrees(fieldOfView); // abertura da lente horizontal
+	frustum.sy = 1.0; //*getTanFromDegrees(fieldOfView); // comprimento á frente
+	frustum.sz = 1.0;//*getTanFromDegrees(fieldOfView); // abertura da lente vertical
 
 	//frustum.rotAngleXX = 90;
 		
@@ -766,6 +766,14 @@ function setEventListeners()
 	}
 	document.getElementById("scene_right_out").onclick = function(){
 		fieldOfView_right += 5;
+
+	}
+	document.getElementById("fov_more").onclick = function(){
+		fieldOfView += 5;
+
+	}
+	document.getElementById("fov_less").onclick = function(){
+		fieldOfView -= 5;
 
 	}		 
 

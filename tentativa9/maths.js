@@ -24,6 +24,12 @@ function radians( degrees ) {
     return degrees * Math.PI / 180.0;
 }
 
+
+
+function getTanFromDegrees(degrees) {
+  return Math.tan(degrees * Math.PI / 180);
+}
+
 //----------------------------------------------------------------------------
 //
 //  Vector Constructors
