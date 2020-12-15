@@ -116,10 +116,10 @@ function orthoFrustumModel( left, right, buttom, top, near, far) {
 
 	return frustum;
 }
-function perspectiveFrustumModel( fov, near, far ) {
-	//var far2 = far-2;
+function perspectiveFrustumModel( fov, near, far_in ) {
+	var far = far_in-2;
 
-	var tan = getTanFromDegrees(fov/2)*4;
+	var tan = getTanFromDegrees(fov/2)*(2+far);
 
 	var x = tan;
 	var z = x;//1.0 + far;
@@ -131,20 +131,20 @@ function perspectiveFrustumModel( fov, near, far ) {
 	frustum.vertices =[ 
     // Front face
     0.0,  1.0,  0.0,
-    -x, -1-2,  z,
-    x, -1-2,  z,
+    -x, -1-far,  z,
+    x, -1-far,  z,
     // Right face
     0.0,  1.0,  0.0,
-    x, -1-2,  z,
-    x, -1-2, -z,
+    x, -1-far,  z,
+    x, -1-far, -z,
     // Back face
     0.0,  1.0,  0.0,
-    x, -1-2, -z,
-    -x, -1-2, -z,
+    x, -1-far, -z,
+    -x, -1-far, -z,
     // Left face
     0.0,  1.0,  0.0,
-    -x, -1-2, -z,
-    -x, -1-2,  z,
+    -x, -1-far, -z,
+    -x, -1-far,  z,
     ];
 
 	computeVertexNormals( frustum.vertices, frustum.normals );
@@ -391,7 +391,7 @@ sceneModels.push( new simpleCubeModel() );
 
 sceneModels[0].tx = 0.0;
 sceneModels[0].ty = -0.3;
-sceneModels[0].tz = 0.0;
+sceneModels[0].tz = -3.0;
 
 sceneModels[0].sx = 0.25;
 sceneModels[0].sy = 0.25;

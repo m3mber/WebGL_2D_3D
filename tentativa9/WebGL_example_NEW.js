@@ -9,11 +9,11 @@ var ort_right = null;
 var ort_buttom = null;
 var ort_top = null;
 var ort_near = null;
-var ort_far = null;
+var ort_far = 1.6;
 
 var persp_aspect = null;
 var persp_near = null; 
-var persp_far=null;
+var persp_far=4;
 
 var cameraMatrix = mat4();
 var cameraMatrix2=mat4();
@@ -382,7 +382,7 @@ function drawScene()
 		 ort_buttom = -1.0;
 		 ort_top = 1.0;
 		 ort_near = -0.7;
-		 ort_far = 1.6;
+		 //ort_far = 1.6;
 		pMatrix = ortho( ort_left, ort_right, ort_buttom, ort_top, ort_near, ort_far );
 		
 		// Global transformation !!
@@ -410,7 +410,7 @@ function drawScene()
 		
 		
 		persp_near = 0.1;
-		persp_far = 4;
+		//persp_far = 4;
 		pMatrix = perspective(fieldOfView, 1, persp_near, persp_far );
 		
 		// Global transformation !!
@@ -775,6 +775,18 @@ function setEventListeners()
 	document.getElementById("fov_less").onclick = function(){
 		fieldOfView -= 5;
 
+	}	
+
+	document.getElementById("far_further").onclick = function(){
+		persp_far += 0.25;
+		ort_far += 0.25;
+		//drawScene_1();
+
+	}
+	document.getElementById("far_closer").onclick = function(){
+		persp_far -= 0.25;
+		ort_far -= 0.25;
+		//drawScene_1();
 	}		 
 
 	// Buttons move all scenes
