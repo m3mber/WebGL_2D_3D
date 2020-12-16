@@ -174,12 +174,6 @@ function initBuffers_1( model )
 
 function drawModel( model, mvMatrix, primitiveType ) 
 {
-
-	// The the global model transformation is an input
-	
-	// Concatenate with the particular model transformations
-	
-    // Pay attention to transformation order !!
     
 	mvMatrix = mult( mvMatrix, translationMatrix( model.tx, model.ty, model.tz ) );
 						 
@@ -190,23 +184,13 @@ function drawModel( model, mvMatrix, primitiveType )
 	mvMatrix = mult( mvMatrix, rotationXXMatrix( model.rotAngleXX ) );
 	
 	mvMatrix = mult( mvMatrix, scalingMatrix( model.sx, model.sy, model.sz ) );
-						 
-	// Passing the Model View Matrix to apply the current transformation
-	
+						 	
 	var mvUniform = gl.getUniformLocation(shaderProgram, "uMVMatrix");
 	
 	gl.uniformMatrix4fv(mvUniform, false, new Float32Array(flatten(mvMatrix)));
-    
-	// Associating the data to the vertex shader
-	
-	// This can be done in a better way !!
-
-	// Vertex Coordinates and Vertex Normal Vectors
-	
+    	
 	initBuffers(model);
-	
-	// Material properties
-	
+		
 	gl.uniform3fv( gl.getUniformLocation(shaderProgram, "k_ambient"), 
 		flatten(model.kAmbi) );
     
@@ -241,16 +225,10 @@ function drawModel( model, mvMatrix, primitiveType )
     }
         
 	// Drawing 
-	
-	// primitiveType allows drawing as filled triangles / wireframe / vertices
-	
+		
 	if( primitiveType == gl.LINE_LOOP ) {
 		
-		// To simulate wireframe drawing!
-		
-		// No faces are defined! There are no hidden lines!
-		
-		// Taking the vertices 3 by 3 and drawing a LINE_LOOP
+
 		
 		var i;
 		
@@ -268,12 +246,6 @@ function drawModel( model, mvMatrix, primitiveType )
 
 function drawModel_1( model, mvMatrix, primType ) 
 {
-
-	// The the global model transformation is an input
-	
-	// Concatenate with the particular model transformations
-	
-    // Pay attention to transformation order !!
     
 	mvMatrix = mult( mvMatrix, translationMatrix( model.tx, model.ty, model.tz ) );
 						 
@@ -284,22 +256,14 @@ function drawModel_1( model, mvMatrix, primType )
 	mvMatrix = mult( mvMatrix, rotationXXMatrix( model.rotAngleXX) );
 	
 	mvMatrix = mult( mvMatrix, scalingMatrix( model.sx, model.sy, model.sz ) );
-						 
-	// Passing the Model View Matrix to apply the current transformation
-	
+						 	
 	var mvUniform_1 = gl_1.getUniformLocation(shaderProgram_1, "uMVMatrix");
 	
 	gl_1.uniformMatrix4fv(mvUniform_1, false, new Float32Array(flatten(mvMatrix)));
     
-	// Associating the data to the vertex shader
-	
-	// This can be done in a better way !!
-
-	// Vertex Coordinates and Vertex Normal Vectors
 	
 	initBuffers_1(model);
 	
-	// Material properties
 	
 	gl_1.uniform3fv( gl_1.getUniformLocation(shaderProgram_1, "k_ambient"), 
 		flatten(model.kAmbi) );
@@ -375,88 +339,52 @@ function drawScene()
 	// Computing the Projection Matrix
 	
 	if( projectionType == 0 ) {
-		
-		// For now, the default orthogonal view volume
 		 ort_left = -1.0;
 		 ort_right = 1.0;
 		 ort_buttom = -1.0;
 		 ort_top = 1.0;
 		 
-		 //ort_far = 1.6;
 		pMatrix = ortho( ort_left, ort_right, ort_buttom, ort_top, ort_near, ort_far );
 		
-		// Global transformation !!
-		
 		globalTz = -0.0;
-		
-		// NEW --- The viewer is on the ZZ axis at an indefinite distance
-		
+			
 		pos_Viewer[0] = pos_Viewer[1] = pos_Viewer[3] = 0.0;
 		
 		pos_Viewer[2] = 0.0;  
 		
-		// TO BE DONE !
-		;
-
-		// Allow the user to control the size of the view volume
 	}
 	else {	
 
-		// A standard view volume.
-		
-		// Viewer is at (0,0,0)
-		
-		// Ensure that the model is "inside" the view volume
-		
-
-		//persp_far = 4;
 		pMatrix = perspective(fieldOfView, 1, persp_near, persp_far );
-		
-		// Global transformation !!
+
 		
 		globalTz = -2.0;
 
-		// NEW --- The viewer is on (0,0,0)
 		
 		pos_Viewer[0] = pos_Viewer[1] = pos_Viewer[2] = 0.0;
 		
 		pos_Viewer[3] = 0.0;  
-		
-		// TO BE DONE !
-		
-		// Allow the user to control the size of the view volume
+
 	}
 	
-
-
-	// Passing the Projection Matrix to apply the current projection	
 	var pUniform = gl.getUniformLocation(shaderProgram, "uPMatrix");
 	
 	gl.uniformMatrix4fv(pUniform, false, new Float32Array(flatten(pMatrix)));
-	
-	// NEW --- Passing the viewer position to the vertex shader
-	
+		
 	gl.uniform4fv( gl.getUniformLocation(shaderProgram, "viewerPosition"),
-        flatten(pos_Viewer));
-	
-	// GLOBAL TRANSFORMATION FOR THE WHOLE SCENE
+        flatten(pos_Viewer));	
 	
 	mvMatrix = translationMatrix( 0, 0, globalTz );
+
 	cameraMatrix = mvMatrix;
-	// NEW - Updating the position of the light sources, if required
-	
-	// FOR EACH LIGHT SOURCE
 	    
 	for(var i = 0; i < lightSources.length; i++ )
 	{
-		// Animating the light source, if defined
 		    
 		var lightSourceMatrix = mat4();
 
 		if( !lightSources[i].isOff() ) {
 				
-			// COMPLETE THE CODE FOR THE OTHER ROTATION AXES
-
 			if( lightSources[i].isRotYYOn() ) 
 			{
 				lightSourceMatrix = mult( 
@@ -476,25 +404,19 @@ function drawScene()
 						rotationZZMatrix( lightSources[i].getRotAngleZZ() ) );
 			}
 		}
-		
-		// NEW Passing the Light Souree Matrix to apply
-	
+			
 		var lsmUniform = gl.getUniformLocation(shaderProgram, "allLights["+ String(i) + "].lightSourceMatrix");
 	
 		gl.uniformMatrix4fv(lsmUniform, false, new Float32Array(flatten(lightSourceMatrix)));
 	}
-			
-	// Instantianting all scene models
-	
+				
 	for(var i = 0; i < sceneModels.length; i++ )
 	{ 
 		drawModel( sceneModels[i],
 			   mvMatrix,
 	           primitiveType );
 	}
-	           
-	// NEW - Counting the frames
-	
+	           	
 	countFrames();
 
 }
@@ -506,11 +428,9 @@ function drawScene_1()
 	
 	var mvMatrix = mat4();
 	
-	// Clearing the frame-buffer and the depth-buffer
 	
 	gl_1.clear(gl_1.COLOR_BUFFER_BIT | gl_1.DEPTH_BUFFER_BIT);
 	
-	// Computing the Projection Matrix
 	if( projectionType == 0 ) {
 
 		var frustum = new orthoFrustumModel(ort_left, ort_right, ort_buttom, ort_top, ort_near, ort_far );	
@@ -525,9 +445,9 @@ function drawScene_1()
 		frustum.ty = 0.0;
 		frustum.tz = 1.0; 
 
-		frustum.sx = 1.0;//*getTanFromDegrees(fieldOfView); // abertura da lente horizontal
-		frustum.sy = 1.0; //*getTanFromDegrees(fieldOfView); // comprimento á frente
-		frustum.sz = 1.0;//*getTanFromDegrees(fieldOfView); // abertura da lente vertical
+		frustum.sx = 1.0; 
+		frustum.sy = 1.0; 
+		frustum.sz = 1.0; 
 
 		//frustum.rotAngleXX = 90;
 
@@ -536,49 +456,30 @@ function drawScene_1()
 		frustumSquare.ty = 0.0;
 		frustumSquare.tz = 0.0; 
 
-		frustumSquare.sx = 1.0; //*getTanFromDegrees(fieldOfView); // abertura da lente horizontal
-		frustumSquare.sy = 1.0; //*getTanFromDegrees(fieldOfView); // comprimento á frente
-		frustumSquare.sz = 1.0; //*getTanFromDegrees(fieldOfView); // abertura da lente vertical		
+		frustumSquare.sx = 1.0; 
+		frustumSquare.sy = 1.0; 
+		frustumSquare.sz = 1.0; 	
 	}
 
-
-	// A standard view volume.
-		
-	// Viewer is at (0,0,0)
-		
-	// Ensure that the model is "inside" the view volume
-		
+	
 	
 	pMatrix = perspective(fieldOfView_right, 1, 0.01, 150 );
-
-	// Global transformation !!
 		
 	globalTz = -5.5;
 
-	// NEW --- The viewer is on (0,0,0)
 		
 	pos_Viewer[0] = pos_Viewer[1] = pos_Viewer[2] = 0.0;
 		
 	pos_Viewer[3] = 1.0;  
-		
-	// TO BE DONE !
-		
-	// Allow the user to control the size of the view volume
-
-	// Passing the Projection Matrix to apply the current projection	
+			
 	var pUniform_1 = gl_1.getUniformLocation(shaderProgram_1, "uPMatrix");
 	
 	gl_1.uniformMatrix4fv(pUniform_1, false, new Float32Array(flatten(pMatrix)));
 	
-	// NEW --- Passing the viewer position to the vertex shader
 	
 	gl_1.uniform4fv( gl_1.getUniformLocation(shaderProgram_1, "viewerPosition"),
         flatten(pos_Viewer));
 	
-	// GLOBAL TRANSFORMATION FOR THE WHOLE SCENE
-	
-
-
 	
 	matrixT = translationMatrix(0, 0, -5.5);
 	matrixRotateX = rotationXXMatrix(rotateX);
@@ -593,21 +494,14 @@ function drawScene_1()
 	
 	cameraMatrix2 = mvMatrix;
 
-
-	// NEW - Updating the position of the light surces, if required
-	
-	// FOR EACH LIGHT SOURCE
 	    
 	for(var i = 0; i < lightSources.length; i++ )
 	{
-		// Animating the light source, if defined
 		    
 		var lightSourceMatrix = mat4();
 
 		if( !lightSources[i].isOff() ) {
 				
-			// COMPLETE THE CODE FOR THE OTHER ROTATION AXES
-
 			if( lightSources[i].isRotYYOn() ) 
 			{
 				lightSourceMatrix = mult( 
@@ -627,16 +521,12 @@ function drawScene_1()
 						rotationZZMatrix( lightSources[i].getRotAngleZZ() ) );
 			}
 		}
-		
-		// NEW Passing the Light Souree Matrix to apply
-	
+			
 		var lsmUniform = gl_1.getUniformLocation(shaderProgram_1, "allLights["+ String(i) + "].lightSourceMatrix");
 	
 		gl_1.uniformMatrix4fv(lsmUniform, false, new Float32Array(flatten(lightSourceMatrix)));
 	}
-			
-	// Instantianting all scene models
-	
+				
 	for(var i = 0; i < sceneModels.length; i++ )
 	{ 
 		drawModel_1( sceneModels[i],
@@ -673,18 +563,15 @@ function animate()
 	
 	var timeNow = new Date().getTime();
 	
-	if( lastTime != 0 ) {
+	if( lastTime != 0 ) 
+	{
 		
 		var elapsed = timeNow - lastTime;
-		
-		// Global rotation
-		
+				
 		if( globalRotationYY_ON ) {
 
 			globalAngleYY += globalRotationYY_DIR * globalRotationYY_SPEED * (90 * elapsed) / 1000.0;
 	    }
-
-		// For every model --- Local rotations
 		
 		for(var i = 0; i < sceneModels.length - 2; i++ )
 	    {
@@ -703,18 +590,8 @@ function animate()
 				sceneModels[i].rotAngleZZ += sceneModels[i].rotZZDir * sceneModels[i].rotZZSpeed * (90 * elapsed) / 1000.0;
 			}
 		}
-		
-		// Rotating the light sources
-	/*
-		for(var i = 0; i < lightSources.length; i++ )
-	    {
-			if( lightSources[i].isRotYYOn() ) {
-				var angle = lightSources[i].getRotAngleYY() + lightSources[i].getRotationSpeed() * (90 * elapsed) / 1000.0;
-		
-				lightSources[i].setRotAngleYY( angle );
-			}
-		}*/
-}
+	
+	}
 	
 	lastTime = timeNow;
 }
@@ -747,9 +624,7 @@ function setEventListeners()
 	var projection = document.getElementById("projection-selection");
 	
 	projection.addEventListener("click", function(){
-				
-		// Getting the selection
-		
+						
 		var p = projection.selectedIndex;
 				
 		switch(p){
@@ -763,33 +638,24 @@ function setEventListeners()
 	});  
 
 	var slider_x = document.getElementById("rotate_scene_right_x");
-		 // Display the default slider value
 		rotateX = slider_x.value;
-		// Update the current slider value (each time you drag the slider handle)
 		slider_x.oninput = function() {
 			rotateX = slider_x.value;
 		}
 
 	var slider_y = document.getElementById("rotate_scene_right_y");
-		 // Display the default slider value
 		rotateY = slider_y.value;
-		// Update the current slider value (each time you drag the slider handle)
 		slider_y.oninput = function() {
 			rotateY = slider_y.value;
 		}
 
 	var slider_z = document.getElementById("rotate_scene_right_z");
-		 // Display the default slider value
-		rotateY = slider_z.value;
-		// Update the current slider value (each time you drag the slider handle)
+		rotateZ = slider_z.value;
 		slider_z.oninput = function() {
 			rotateZ = slider_z.value;
 		}
 
 	var slider_zoom_right = document.getElementById("scene_right_zoom");
-		 // Display the default slider value
-		rotateY = slider_zoom_right.value;
-		// Update the current slider value (each time you drag the slider handle)
 		slider_zoom_right.oninput = function() {
 			fieldOfView_right = slider_zoom_right.value;
 		}
@@ -798,19 +664,15 @@ function setEventListeners()
 	document.getElementById("far_further").onclick = function(){
 		persp_far += 0.25;
 		ort_far += 0.25;
-		//drawScene_1();
-
 	}
 	document.getElementById("far_closer").onclick = function(){
 		if (persp_far > 1.0){
-		persp_far -= 0.25;
-		ort_far -= 0.25;
-	}
-		//drawScene_1();
+			persp_far -= 0.25;
+			ort_far -= 0.25;
+		}
 	}
 
-	document.getElementById("front_plane_far").onclick = function(){
-		
+	document.getElementById("front_plane_far").onclick = function(){		
 		persp_near += 0.15;
 		ort_near += 0.10;
 
@@ -823,8 +685,6 @@ function setEventListeners()
 	}	
 
 	var slider_scene_lr = document.getElementById("move_scene_left_right");
-		// Display the default slider value
-		// Update the current slider value (each time you drag the slider handle)
 		slider_scene_lr.oninput = function() {
 			sceneModels[0].tx = slider_scene_lr.value / 100 + 0.0;
 			sceneModels[1].tx = slider_scene_lr.value / 100 + 1.5;
@@ -832,8 +692,6 @@ function setEventListeners()
 		}
 
 	var slider_scene_ud = document.getElementById("move_scene_up_down");
-		// Display the default slider value
-		// Update the current slider value (each time you drag the slider handle)
 		slider_scene_ud.oninput = function() {
 			sceneModels[0].ty = slider_scene_ud.value / 100 - 0.3;
 			sceneModels[1].ty = slider_scene_ud.value / 100 + 0.5;
@@ -842,24 +700,18 @@ function setEventListeners()
 
 
 	var slider_cube_lr = document.getElementById("cube_left_right");
-		// Display the default slider value
-		// Update the current slider value (each time you drag the slider handle)
 		slider_cube_lr.oninput = function() {
 			
 			sceneModels[0].tx = slider_cube_lr.value / 100;
 		}
 
 	var slider_cube_ud = document.getElementById("cube_up_down");
-		// Display the default slider value
-		// Update the current slider value (each time you drag the slider handle)
 		slider_cube_ud.oninput = function() {
 			
 			sceneModels[0].ty = slider_cube_ud.value / 100 - 0.3;
 		}
 
 	var slider_cube_io = document.getElementById("cube_in_out");
-		// Display the default slider value
-		// Update the current slider value (each time you drag the slider handle)
 		slider_cube_io.oninput = function() {
 			
 			sceneModels[0].tz = slider_cube_io.value / 100 - 3.0;
@@ -867,48 +719,36 @@ function setEventListeners()
 
 
 	var slider_sphere1_lr = document.getElementById("sphere1_left_right");
-		// Display the default slider value
-		// Update the current slider value (each time you drag the slider handle)
 		slider_sphere1_lr.oninput = function() {
 			
 			sceneModels[1].tx = slider_sphere1_lr.value / 100 + 1.5;
 		}
 
 	var slider_sphere1_ud = document.getElementById("sphere1_up_down");
-		// Display the default slider value
-		// Update the current slider value (each time you drag the slider handle)
 		slider_sphere1_ud.oninput = function() {
 			
 			sceneModels[1].ty = slider_sphere1_ud.value / 100 + 0.5;
 		}
 
 	var slider_sphere1_io = document.getElementById("sphere1_in_out");
-		// Display the default slider value
-		// Update the current slider value (each time you drag the slider handle)
 		slider_sphere1_io.oninput = function() {
 			
 			sceneModels[1].tz = slider_sphere1_io.value / 100 -1.9;
 		}
 
 	var slider_sphere2_lr = document.getElementById("sphere2_left_right");
-		// Display the default slider value
-		// Update the current slider value (each time you drag the slider handle)
 		slider_sphere2_lr.oninput = function() {
 			
 			sceneModels[2].tx = slider_sphere2_lr.value / 100 + 0.5;
 		}
 
 	var slider_sphere2_ud = document.getElementById("sphere2_up_down");
-		// Display the default slider value
-		// Update the current slider value (each time you drag the slider handle)
 		slider_sphere2_ud.oninput = function() {
 			
 			sceneModels[2].ty = slider_sphere2_ud.value / 100 + 0.0;
 		}
 
 	var slider_sphere2_io = document.getElementById("sphere2_in_out");
-		// Display the default slider value
-		// Update the current slider value (each time you drag the slider handle)
 		slider_sphere2_io.oninput = function() {
 			
 			sceneModels[2].tz = slider_sphere2_io.value / 100 -1.0;
@@ -917,21 +757,13 @@ function setEventListeners()
 	  
 
 	var slider_fov = document.getElementById("scene_fov");
-		 // Display the default slider value
-		rotateY = slider_fov.value;
-		// Update the current slider value (each time you drag the slider handle)
 		slider_fov.oninput = function() {
 			fieldOfView = slider_fov.value;
 		}
 
 
 
-	document.getElementById("XX-on-off-button").onclick = function(){
-		
-		// Switching on / off
-		
-		// For every model
-		
+	document.getElementById("XX-on-off-button").onclick = function(){		
 		for(var i = 0; i < sceneModels.length; i++ )
 	    {
 			if( sceneModels[i].rotXXOn ) {
@@ -945,11 +777,6 @@ function setEventListeners()
 	};
 
 	document.getElementById("XX-direction-button").onclick = function(){
-		
-		// Switching the direction
-		
-		// For every model
-		
 		for(var i = 0; i < sceneModels.length; i++ )
 	    {
 			if( sceneModels[i].rotXXDir == 1 ) {
@@ -963,31 +790,20 @@ function setEventListeners()
 	};      
 
 	document.getElementById("XX-slower-button").onclick = function(){
-		
-		// For every model
-		
 		for(var i = 0; i < sceneModels.length; i++ )
 	    {
 			sceneModels[i].rotXXSpeed *= 0.75; 
 		}
 	};      
 
-	document.getElementById("XX-faster-button").onclick = function(){
-		
-		// For every model
-		
+	document.getElementById("XX-faster-button").onclick = function(){		
 		for(var i = 0; i < sceneModels.length; i++ )
 	    {
 			sceneModels[i].rotXXSpeed *= 1.25; 
 		}
 	};      
 
-	document.getElementById("YY-on-off-button").onclick = function(){
-		
-		// Switching on / off
-		
-		// For every model
-		
+	document.getElementById("YY-on-off-button").onclick = function(){		
 		for(var i = 0; i < sceneModels.length; i++ )
 	    {
 			if( sceneModels[i].rotYYOn ) {
@@ -1000,12 +816,7 @@ function setEventListeners()
 		}
 	};
 
-	document.getElementById("YY-direction-button").onclick = function(){
-		
-		// Switching the direction
-		
-		// For every model
-		
+	document.getElementById("YY-direction-button").onclick = function(){		
 		for(var i = 0; i < sceneModels.length; i++ )
 	    {
 			if( sceneModels[i].rotYYDir == 1 ) {
@@ -1019,9 +830,6 @@ function setEventListeners()
 	};      
 
 	document.getElementById("YY-slower-button").onclick = function(){
-
-		// For every model
-		
 		for(var i = 0; i < sceneModels.length; i++ )
 	    {
 			sceneModels[i].rotYYSpeed *= 0.75; 
@@ -1029,9 +837,6 @@ function setEventListeners()
 	};      
 
 	document.getElementById("YY-faster-button").onclick = function(){
-		
-		// For every model
-		
 		for(var i = 0; i < sceneModels.length; i++ )
 	    {
 			sceneModels[i].rotYYSpeed *= 1.25; 
@@ -1039,11 +844,6 @@ function setEventListeners()
 	};      
 
 	document.getElementById("ZZ-on-off-button").onclick = function(){
-		
-		// Switching on / off
-		
-		// For every model
-		
 		for(var i = 0; i < sceneModels.length; i++ )
 	    {
 			if( sceneModels[i].rotZZOn ) {
@@ -1056,12 +856,7 @@ function setEventListeners()
 		}
 	};
 
-	document.getElementById("ZZ-direction-button").onclick = function(){
-		
-		// Switching the direction
-		
-		// For every model
-		
+	document.getElementById("ZZ-direction-button").onclick = function(){		
 		for(var i = 0; i < sceneModels.length; i++ )
 	    {
 			if( sceneModels[i].rotZZDir == 1 ) {
@@ -1074,62 +869,50 @@ function setEventListeners()
 		}
 	};      
 
-	document.getElementById("ZZ-slower-button").onclick = function(){
-		
-		// For every model
-		
+	document.getElementById("ZZ-slower-button").onclick = function(){	
 		for(var i = 0; i < sceneModels.length; i++ )
 	    {
 			sceneModels[i].rotZZSpeed *= 0.75; 
 		}
 	};      
 
-	document.getElementById("ZZ-faster-button").onclick = function(){
-		
-		// For every model
-		
+	document.getElementById("ZZ-faster-button").onclick = function(){		
 		for(var i = 0; i < sceneModels.length; i++ )
 	    {
 			sceneModels[i].rotZZSpeed *= 1.25; 
 		}
 	};
-	document.getElementById("light_left").onclick = function(){
-		
+	document.getElementById("light_left").onclick = function(){		
 		var pos = lightSources[0].getPosition();
 		if( pos[0] > -15 ){
 			lightSources[0].setPosition(pos[0]-1,pos[1],pos[2],pos[3]);
 		}
 	};
-	document.getElementById("light_right").onclick = function(){
-		
+	document.getElementById("light_right").onclick = function(){		
 		var pos = lightSources[0].getPosition();
 		if( pos[0] < 15 ){
 			lightSources[0].setPosition(pos[0]+1,pos[1],pos[2],pos[3]);
 		}
 	};
-	document.getElementById("light_up").onclick = function(){
-		
+	document.getElementById("light_up").onclick = function(){		
 		var pos = lightSources[0].getPosition();
 		if( pos[1] > -15 ){
 			lightSources[0].setPosition(pos[0],pos[1]+1,pos[2],pos[3]);
 		}
 	};
-	document.getElementById("light_down").onclick = function(){
-		
+	document.getElementById("light_down").onclick = function(){		
 		var pos = lightSources[0].getPosition();
 		if( pos[1] < 15 ){
 			lightSources[0].setPosition(pos[0],pos[1]-1,pos[2],pos[3]);
 		}
 	};
-	document.getElementById("light_closer").onclick = function(){
-		
+	document.getElementById("light_closer").onclick = function(){		
 		var pos = lightSources[0].getPosition();
 		if( pos[2] < 10 ){
 			lightSources[0].setPosition(pos[0],pos[1],pos[2]+0.3,pos[3]);
 		}
 	};
-	document.getElementById("light_further").onclick = function(){
-		
+	document.getElementById("light_further").onclick = function(){		
 		var pos = lightSources[0].getPosition();
 		if( pos[1] > -7 ){
 			lightSources[0].setPosition(pos[0],pos[1],pos[2]-0.3,pos[3]);
@@ -1170,37 +953,19 @@ function setEventListeners()
 function initWebGL( canvas ) 
 {
 	try {
-		
-		// Create the WebGL context
-		
-		// Some browsers still need "experimental-webgl"
+
 		
 		gl = canvas.getContext("webgl") || canvas.getContext("experimental-webgl");
+
 		
-		// DEFAULT: The viewport occupies the whole canvas 
-		
-		// DEFAULT: The viewport background color is WHITE
-		
-		// NEW - Drawing the triangles defining the model
-		
-		primitiveType = gl.TRIANGLES;
-		
-		// DEFAULT: Face culling is DISABLED
-		
-		// Enable FACE CULLING
+		primitiveType = gl.TRIANGLES;		
 		
 		gl.enable( gl.CULL_FACE );
 
-		gl.clearColor(0.0, 0.5, 0.7, 1.0);
-		
-		// DEFAULT: The BACK FACE is culled!!
-		
-		// The next instruction is not needed...
+		gl.clearColor(0.0, 0.5, 0.7, 1.0);		
 		
 		gl.cullFace( gl.BACK );
-		
-		// Enable DEPTH-TEST
-		
+				
 		gl.enable( gl.DEPTH_TEST );
         
 	} catch (e) {
@@ -1214,36 +979,16 @@ function initWebGL_1( canvas )
 {
 	try {
 		
-		// Create the WebGL context
-		
-		// Some browsers still need "experimental-webgl"
-		
 		gl_1 = canvas.getContext("webgl") || canvas.getContext("experimental-webgl");
-		
-		// DEFAULT: The viewport occupies the whole canvas 
-		
-		// DEFAULT: The viewport background color is WHITE
-		
-		// NEW - Drawing the triangles defining the model
-		
+				
 		primitiveType_1 = gl_1.TRIANGLES;
-		
-		// DEFAULT: Face culling is DISABLED
-		
-		// Enable FACE CULLING
-		
+				
 		gl_1.enable( gl_1.CULL_FACE );
 
 		gl_1.clearColor(0.5, 0.5, 0.7, 1.0);
-		
-		// DEFAULT: The BACK FACE is culled!!
-		
-		// The next instruction is not needed...
-		
+				
 		gl_1.cullFace( gl_1.BACK );
-		
-		// Enable DEPTH-TEST
-		
+
 		gl_1.enable( gl_1.DEPTH_TEST );
         
 	} catch (e) {
@@ -1268,6 +1013,6 @@ function runWebGL() {
 	
 	setEventListeners();
 	
-	tick();		// A timer controls the rendering / animation    
+	tick();	
 
 }
