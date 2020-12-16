@@ -39,7 +39,7 @@ The fragment shader is the same simple one.
 	
     // NEW - Array of lights
     
-	#define MAX_LIGHTS 5
+	#define MAX_LIGHTS 1
 
 	uniform int numLights;
 
@@ -286,6 +286,31 @@ The fragment shader is the same simple one.
 			<button id="front_plane_far" type="button" class="btn-sm btn-dark">+</button>
 		    <button id="front_plane_closer" type="button" class="btn-sm btn-dark">-</button>
 			</p>
+
+			<p>Change the light position:
+			<button id="light_left" type="button" class="btn-sm btn-dark">left</button>
+		    <button id="light_right" type="button" class="btn-sm btn-dark">right</button>
+		    <button id="light_up" type="button" class="btn-sm btn-dark">up</button>
+		    <button id="light_down" type="button" class="btn-sm btn-dark">down</button>
+			<button id="light_further" type="button" class="btn-sm btn-dark">further</button>
+			<button id="light_closer" type="button" class="btn-sm btn-dark">closer</button>
+			</p>
+
+			<p>Change the color:</p>
+			<p>Red:
+			<button id="light_mred" type="button" class="btn-sm btn-dark">+</button>
+		    <button id="light_lred" type="button" class="btn-sm btn-dark">-</button>
+			</p>
+			<p>Green:
+			<button id="light_mgreen" type="button" class="btn-sm btn-dark">+</button>
+		    <button id="light_lgreen" type="button" class="btn-sm btn-dark">-</button>
+			</p>
+			<p>Blue:
+			<button id="light_mblue" type="button" class="btn-sm btn-dark">+</button>
+		    <button id="light_lblue" type="button" class="btn-sm btn-dark">-</button>
+			</p>
+
+
 			<br>
 			<p>Choose the <b>projection type</b>:
 			
@@ -293,6 +318,9 @@ The fragment shader is the same simple one.
 				<option value="0">Orthogonal Projection</option>
 				<option value="1">Perspective Projection</option>
 	        </select>
+	       
+			<br>
+		
 			<div class="slidecontainer">
 			Move Scene Left or Right:
 			  <input type="range" min="-350" max="350" value="0" class="slider" id="move_scene_left_right">
@@ -305,9 +333,9 @@ The fragment shader is the same simple one.
 
 			<div class="slidecontainer">
 			Change Field of View:
-			  <input type="range" min="0" max="150" value="60" class="slider" id="left_scene_fov">
+			  <input type="range" min="0" max="150" value="60" class="slider" id="scene_fov">
 			</div>
-	
+
 	        <br><br>
 	        <h4>Individual Models</h4>
 		    <p><b>Cube Movement: </b>  
@@ -371,7 +399,7 @@ The fragment shader is the same simple one.
 			</div>
 			<br>
 			<div class="slidecontainer">
-			Change Field of View:
+			Zoom in/out right scene:
 			  <input type="range" min="0" max="120" value="60" class="slider" id="scene_right_zoom">
 			</div>
 			<br>

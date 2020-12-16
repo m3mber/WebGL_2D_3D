@@ -463,6 +463,18 @@ function drawScene()
 						lightSourceMatrix, 
 						rotationYYMatrix( lightSources[i].getRotAngleYY() ) );
 			}
+			if( lightSources[i].isRotXXOn() ) 
+			{
+				lightSourceMatrix = mult( 
+						lightSourceMatrix, 
+						rotationXXMatrix( lightSources[i].getRotAngleXX() ) );
+			}
+			if( lightSources[i].isRotZZOn() ) 
+			{
+				lightSourceMatrix = mult( 
+						lightSourceMatrix, 
+						rotationZZMatrix( lightSources[i].getRotAngleZZ() ) );
+			}
 		}
 		
 		// NEW Passing the Light Souree Matrix to apply
@@ -599,8 +611,20 @@ function drawScene_1()
 			if( lightSources[i].isRotYYOn() ) 
 			{
 				lightSourceMatrix = mult( 
-						lightSourceMatrix, 
+						mvMatrix, 
 						rotationYYMatrix( lightSources[i].getRotAngleYY() ) );
+			}
+			if( lightSources[i].isRotXXOn() ) 
+			{
+				lightSourceMatrix = mult( 
+						lightSourceMatrix, 
+						rotationXXMatrix( lightSources[i].getRotAngleXX() ) );
+			}
+			if( lightSources[i].isRotZZOn() ) 
+			{
+				lightSourceMatrix = mult( 
+						lightSourceMatrix, 
+						rotationZZMatrix( lightSources[i].getRotAngleZZ() ) );
 			}
 		}
 		
@@ -620,14 +644,6 @@ function drawScene_1()
 	           primitiveType );
 	}
 
-		
-	/*var viewMatrix = matrix_invert(cameraMatrix2);
- 
-    let matx = mult( pMatrix, mvMatrix);
-    	matx = mult( matx, cameraMatrix);
-*/
-
-
 
 	var prim_t = gl_1.LINE_LOOP;
 
@@ -642,9 +658,6 @@ function drawScene_1()
 		           		prim_t );		
 	}
 
-
-
-	// NEW - Counting the frames
 	
 	countFrames();
 
@@ -903,14 +916,13 @@ function setEventListeners()
 
 	  
 
-	var slider_fov = document.getElementById("left_scene_fov");
+	var slider_fov = document.getElementById("scene_fov");
 		 // Display the default slider value
 		rotateY = slider_fov.value;
 		// Update the current slider value (each time you drag the slider handle)
 		slider_fov.oninput = function() {
 			fieldOfView = slider_fov.value;
 		}
-
 
 
 
@@ -1080,7 +1092,74 @@ function setEventListeners()
 	    {
 			sceneModels[i].rotZZSpeed *= 1.25; 
 		}
-	};      
+	};
+	document.getElementById("light_left").onclick = function(){
+		
+		var pos = lightSources[0].getPosition();
+		if( pos[0] > -15 ){
+			lightSources[0].setPosition(pos[0]-1,pos[1],pos[2],pos[3]);
+		}
+	};
+	document.getElementById("light_right").onclick = function(){
+		
+		var pos = lightSources[0].getPosition();
+		if( pos[0] < 15 ){
+			lightSources[0].setPosition(pos[0]+1,pos[1],pos[2],pos[3]);
+		}
+	};
+	document.getElementById("light_up").onclick = function(){
+		
+		var pos = lightSources[0].getPosition();
+		if( pos[1] > -15 ){
+			lightSources[0].setPosition(pos[0],pos[1]+1,pos[2],pos[3]);
+		}
+	};
+	document.getElementById("light_down").onclick = function(){
+		
+		var pos = lightSources[0].getPosition();
+		if( pos[1] < 15 ){
+			lightSources[0].setPosition(pos[0],pos[1]-1,pos[2],pos[3]);
+		}
+	};
+	document.getElementById("light_closer").onclick = function(){
+		
+		var pos = lightSources[0].getPosition();
+		if( pos[2] < 10 ){
+			lightSources[0].setPosition(pos[0],pos[1],pos[2]+0.3,pos[3]);
+		}
+	};
+	document.getElementById("light_further").onclick = function(){
+		
+		var pos = lightSources[0].getPosition();
+		if( pos[1] > -7 ){
+			lightSources[0].setPosition(pos[0],pos[1],pos[2]-0.3,pos[3]);
+		}
+	};
+	document.getElementById("light_mred").onclick = function(){
+		var i = lightSources[0].getIntensity();
+		if( i[0] < 1 ){			lightSources[0].setIntensity(i[0]+0.1,i[1],i[2]);		}
+	};
+	document.getElementById("light_lred").onclick = function(){
+		var i = lightSources[0].getIntensity();
+		if( i[0] > 0 ){			lightSources[0].setIntensity(i[0]-0.1,i[1],i[2]);		}
+	};
+	document.getElementById("light_mgreen").onclick = function(){
+		var i = lightSources[0].getIntensity();
+		if( i[1] < 1 ){			lightSources[0].setIntensity(i[0],i[1]+0.1,i[2]);		}
+	};
+	document.getElementById("light_lgreen").onclick = function(){
+		var i = lightSources[0].getIntensity();
+		if( i[1] > 0 ){			lightSources[0].setIntensity(i[0],i[1]-0.1,i[2]);		}
+	};
+	document.getElementById("light_mblue").onclick = function(){
+		var i = lightSources[0].getIntensity();
+		if( i[2] < 1 ){			lightSources[0].setIntensity(i[0],i[1],i[2]+0.1);		}
+	};
+	document.getElementById("light_lblue").onclick = function(){
+		var i = lightSources[0].getIntensity();
+		if( i[2] > 0 ){			lightSources[0].setIntensity(i[0],i[1],i[2]-0.1);		}
+	};
+      
 }
 
 
