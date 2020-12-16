@@ -122,11 +122,7 @@ function perspectiveFrustumModel( fov, near, far_in ) {
 	var tan = getTanFromDegrees(fov/2)*(2+far);
 
 	var x = tan;
-	var z = x;//1.0 + far;
-	//var neg = -tan;//-1.0-far;
-	
-	//var z = null;
-	//var minusZ = null;
+	var z = x;
 	var frustum = new emptyModelFeatures();
 	frustum.vertices =[ 
     // Front face
@@ -197,8 +193,6 @@ function singleTriangleModel( ) {
 		 
 		 0.5,  0.5,  0.5,
 
-
-
 	];
 
 	triangle.normals = [
@@ -213,55 +207,6 @@ function singleTriangleModel( ) {
 	];
 
 	return triangle;
-}
-
-function simpleCameraModel( ) {
-	
-	var camera = new emptyModelFeatures();
-	
-	camera.vertices = [
-
-		-1.000000, -1.000000,  1.000000, 
-		 1.000000,  1.000000,  1.000000, 
-		-1.000000,  1.000000,  1.000000, 
-		-1.000000, -1.000000,  1.000000,
-		 1.000000, -1.000000,  1.000000, 
-		 1.000000,  1.000000,  1.000000, 
-         1.000000, -1.000000,  1.000000, 
-		 1.000000, -1.000000, -1.000000, 
-		 1.000000,  1.000000, -1.000000, 
-         1.000000, -1.000000,  1.000000, 
-         1.000000,  1.000000, -1.000000, 
-         1.000000,  1.000000,  1.000000, 
-        -1.000000, -1.000000, -1.000000, 
-        -1.000000,  1.000000, -1.000000,
-         1.000000,  1.000000, -1.000000, 
-        -1.000000, -1.000000, -1.000000, 
-         1.000000,  1.000000, -1.000000, 
-         1.000000, -1.000000, -1.000000, 
-        -1.000000, -1.000000, -1.000000, 
-		-1.000000, -1.000000,  1.000000, 
-		-1.000000,  1.000000, -1.000000, 
-		-1.000000, -1.000000,  1.000000, 
-		-1.000000,  1.000000,  1.000000, 
-		-1.000000,  1.000000, -1.000000, 
-		-1.000000,  1.000000, -1.000000, 
-		-1.000000,  1.000000,  1.000000, 
-		 1.000000,  1.000000, -1.000000, 
-		-1.000000,  1.000000,  1.000000, 
-		 1.000000,  1.000000,  1.000000, 
-		 1.000000,  1.000000, -1.000000, 
-		-1.000000, -1.000000,  1.000000, 
-		-1.000000, -1.000000, -1.000000,
-		 1.000000, -1.000000, -1.000000, 
-		-1.000000, -1.000000,  1.000000, 
-		 1.000000, -1.000000, -1.000000, 
-		 1.000000, -1.000000,  1.000000, 
-	];
-
-	computeVertexNormals( camera.vertices, camera.normals );
-
-	return camera;
 }
 
 
@@ -364,17 +309,6 @@ function tetrahedronModel( subdivisionDepth = 0 ) {
 	return tetra;
 }
 
-function cameraModel( subdivisionDepth = 2 )
-{
-	var camera = new simpleCameraModel();
-
-	midPointRefinement( camera.vertices, subdivisionDepth );
-	
-	moveToSphericalSurface( camera.vertices )
-	
-	computeVertexNormals( camera.vertices, camera.normals );
-}
-
 
 function sphereModel( subdivisionDepth = 2 ) {
 	
@@ -400,45 +334,35 @@ function sphereModel( subdivisionDepth = 2 ) {
 
 var sceneModels = [];
 
-// Model 0 --- Top Left
-/*
-sceneModels.push( new singleTriangleModel() );
-
-sceneModels[0].tx = -0.5; sceneModels[0].ty = 0.5;
-
-sceneModels[0].sx = sceneModels[0].sy = sceneModels[0].sz = 0.5;
-*/
-
-
 
 //Cubo
 sceneModels.push( new simpleCubeModel() );
 
-sceneModels[0].tx = 0.0;
-sceneModels[0].ty = -0.3;
-sceneModels[0].tz = -3.0;
+sceneModels[0].tx = -0.6;
+sceneModels[0].ty = -0.64;
+sceneModels[0].tz = -1.0;
 
 sceneModels[0].sx = 0.25;
 sceneModels[0].sy = 0.25;
 sceneModels[0].sz = 0.25;
 
 
-// Esfera nº1
-sceneModels.push( new sphereModel( 5 ) );
+// tetraedro nº1
+sceneModels.push( new simpleTetrahedronModel() );
 
-sceneModels[1].tx = 1.5;
-sceneModels[1].ty = 0.5;
-sceneModels[1].tz = -1.9;
+sceneModels[1].tx = 0.7;
+sceneModels[1].ty = -0.3;
+sceneModels[1].tz = -1;
 
-sceneModels[1].sx = sceneModels[1].sy = sceneModels[1].sz = 0.35;
+sceneModels[1].sx = sceneModels[1].sy = sceneModels[1].sz = 0.4;
 
 
 // Esfera nº2
 sceneModels.push( new sphereModel( 5 ) );
 
-sceneModels[2].tx = 0.5;
+sceneModels[2].tx = 0;
 sceneModels[2].ty = 0;
-sceneModels[2].tz = -1;
+sceneModels[2].tz = -1.5;
 
 sceneModels[2].sx = sceneModels[2].sy = sceneModels[2].sz = 0.4;
 
