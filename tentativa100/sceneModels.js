@@ -71,7 +71,6 @@ function emptyModelFeatures() {
 function orthoFrustumModel( left, right, buttom, top, near, far) {
 	
 	var frustum = new emptyModelFeatures();
-	
 	frustum.vertices = [
 
 		left, buttom,  -near, 

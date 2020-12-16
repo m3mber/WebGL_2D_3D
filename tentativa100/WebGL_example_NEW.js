@@ -8,7 +8,7 @@ var ort_left = null;
 var ort_right = null;
 var ort_buttom = null;
 var ort_top = null;
-var ort_near = null;
+var ort_near = -0.7;
 var ort_far = 1.6;
 
 var persp_aspect = null;
@@ -381,7 +381,7 @@ function drawScene()
 		 ort_right = 1.0;
 		 ort_buttom = -1.0;
 		 ort_top = 1.0;
-		 ort_near = -0.7;
+		 
 		 //ort_far = 1.6;
 		pMatrix = ortho( ort_left, ort_right, ort_buttom, ort_top, ort_near, ort_far );
 		
@@ -812,14 +812,14 @@ function setEventListeners()
 	document.getElementById("front_plane_far").onclick = function(){
 		
 		persp_near += 0.15;
-		console.log(persp_near);
+		ort_near += 0.10;
 
 	}
 	document.getElementById("front_plane_closer").onclick = function(){
 		if (persp_near > 1.0) {
 			persp_near -= 0.15;
+			ort_near -= 0.10;
 		}
-		console.log(persp_near);
 	}	
 
 	var slider_scene_lr = document.getElementById("move_scene_left_right");
