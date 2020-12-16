@@ -346,7 +346,7 @@ sceneModels[0].sy = 0.25;
 sceneModels[0].sz = 0.25;
 
 
-// tetraedro nº1
+// tetraedro 
 sceneModels.push( new simpleTetrahedronModel() );
 
 sceneModels[1].tx = 0.7;
@@ -356,7 +356,7 @@ sceneModels[1].tz = -1;
 sceneModels[1].sx = sceneModels[1].sy = sceneModels[1].sz = 0.4;
 
 
-// Esfera nº2
+// Esfera 
 sceneModels.push( new sphereModel( 5 ) );
 
 sceneModels[2].tx = 0;
@@ -366,16 +366,6 @@ sceneModels[2].tz = -1.5;
 sceneModels[2].sx = sceneModels[2].sy = sceneModels[2].sz = 0.4;
 
 
-/*sceneModels.push( new simpleCameraModel( 5 ) );
-
-sceneModels[3].tx = 0;
-sceneModels[3].ty = -0.2;
-sceneModels[3].tz = 2.5;
-
-sceneModels[3].sx = 0.1;
-sceneModels[3].sy = 0.1
-sceneModels[3].sz = 0.2;
-*/
 sceneModels.push( new simpleCubeModel( 5 ) );
 
 sceneModels[3].tx = 0;
@@ -394,46 +384,3 @@ sceneModels[4].tz = 2.0;
 
 sceneModels[4].sx = sceneModels[4].sy = sceneModels[4].sz = 0.05;
 
-/*
-sceneModels.push( new simpleCubeModel() );
-
-sceneModels[2].tx = -0.5; sceneModels[2].ty = -0.5;
-
-sceneModels[2].sx = sceneModels[2].sy = sceneModels[2].sz = 0.25;
-
-
-
-
-sceneModels.push( new simpleCubeModel() );
-
-sceneModels[3].tx = -0.4; sceneModels[3].ty = 0.6; sceneModels[3].tz = -0;
-
-sceneModels[3].sx = sceneModels[3].sy = 0.20;  sceneModels[3].sz = -0.2;
-
-
-sceneModels.push( new simpleCubeModel() );
-
-sceneModels[4].tx = -0.3; sceneModels[4].ty = 0.3; sceneModels[4].tz = 0;
-
-sceneModels[4].sx = sceneModels[4].sy = 0.20; sceneModels[4].sz = 0.2;
-*/
-// Model 3 --- Bottom Left
-/*
-sceneModels.push( new cubeModel( 1 ) );
-
-sceneModels[2].tx = -0.5; sceneModels[2].ty = -0.5;
-
-sceneModels[2].sx = 0.4; sceneModels[2].sy = sceneModels[2].sz = 0.25;
-/*
-// Model 4 --- Middle
-/*
-sceneModels.push( new simpleCubeModel() );
-
-sceneModels[4].sx = 0.1; sceneModels[4].sy = 0.75; sceneModels[4].sz = 0.1;
-
-// Model 5 --- Middle
-
-sceneModels.push( new sphereModel( 3 ) );
-
-sceneModels[5].sx = 0.25; sceneModels[5].sy = 0.25; sceneModels[5].sz = 0.25;
-*/
